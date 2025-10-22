@@ -22,11 +22,8 @@ class MenuScreen extends StatelessWidget {
               onPressed: () => context.push('/registrar_adoptante'),
               child: const Text('Registrar adoptante'),
             ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () => context.push('/lista_mascotas'),
-              child: const Text('Ver mascotas (si eres adoptante)'),
-            ),
+            // Botón de lista eliminado por petición: la navegación a la lista
+            // se realiza después de registrar un adoptante.
           ],
         ),
       ),

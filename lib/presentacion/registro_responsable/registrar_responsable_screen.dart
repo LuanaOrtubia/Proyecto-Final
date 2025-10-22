@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:proyecto_final/adaptadores/injection.dart';
+import 'package:proyecto_final/aplicacion/registros.dart';
+import 'package:proyecto_final/dominio/entidades/responsable_de_mascota.dart';
 
 class RegistrarResponsableScreen extends StatefulWidget {
   const RegistrarResponsableScreen({super.key});
@@ -27,16 +31,20 @@ class _RegistrarResponsableScreenState
 
   void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
-      // Por ahora solo mostramos un snackbar. En una implementación real
-      // llamaríamos al caso de uso RegistrarMascota.
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Responsable registrado')));
-      Navigator.pushNamed(
-        context,
-        '/registrar_mascota',
-        arguments: {'esResponsable': true},
+      final responsable = ResponsableDeMascota(
+        dni: int.parse(_dniController.text),
+        nombre: _nombreController.text,
+        apellido: _apellidoController.text,
+        correo: _correoController.text,
       );
+
+      final registrar = getIt<RegistrarMascota>();
+      registrar.ejecutar(responsable).then((_) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Responsable registrado')));
+        context.push('/registrar_mascota', extra: {'esResponsable': true});
+      }).catchError((e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+      });
     }
   }
 

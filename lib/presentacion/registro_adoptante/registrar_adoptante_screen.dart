@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:proyecto_final/dominio/entidades/adoptante_de_mascota.dart';
+import 'package:proyecto_final/adaptadores/injection.dart';
+import 'package:proyecto_final/aplicacion/registros.dart';
 
 class RegistrarAdoptanteScreen extends StatefulWidget {
   const RegistrarAdoptanteScreen({super.key});
@@ -26,10 +30,20 @@ class _RegistrarAdoptanteScreenState extends State<RegistrarAdoptanteScreen> {
 
   void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Adoptante registrado')));
-      Navigator.pushNamed(context, '/lista_mascotas');
+      final adoptante = AdoptanteDeMascota(
+        dni: int.parse(_dniController.text),
+        nombre: _nombreController.text,
+        apellido: _apellidoController.text,
+        correo: _correoController.text,
+      );
+
+      final adoptar = getIt<AdoptarMascota>();
+      adoptar.ejecutar(adoptante).then((_) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Adoptante registrado')));
+        context.push('/lista_mascotas');
+      }).catchError((e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+      });
     }
   }
 
