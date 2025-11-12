@@ -6,7 +6,7 @@ import '../aplicacion/registros.dart';
 final getIt = GetIt.instance;
 
 void initInjection() {
-  // Repositorio en memoria
+  // Repositorio en memoria (implementación por defecto)
   getIt.registerLazySingleton<RepositorioDeMascota>(
     () => AdaptadorDeMascotaEnMemoria(),
   );

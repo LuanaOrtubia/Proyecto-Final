@@ -1,4 +1,4 @@
-import '../dominio/entidades/responsable_de_mascota.dart';
+import '../dominio/entidades/mascota.dart';
 import '../dominio/entidades/adoptante_de_mascota.dart';
 import '../dominio/repositorios/repositorio_de_mascota.dart';
 
@@ -7,23 +7,17 @@ class RegistrarMascota {
 
   RegistrarMascota(this.repositorio);
 
-  Future<void> ejecutar(ResponsableDeMascota responsable) async {
-    // Validaciones
-    if (responsable.dni <= 0) {
-      throw ArgumentError('DNI debe ser un entero positivo');
+  Future<void> ejecutar(Mascota mascota) async {
+    // Validaciones simples
+    if (mascota.nombre.isEmpty) {
+      throw ArgumentError('Nombre de mascota requerido');
     }
-    final correoValido = _validarCorreo(responsable.correo);
-    if (!correoValido) {
-      throw ArgumentError('Correo inválido');
+    if (mascota.edad.trim().isEmpty) {
+      throw ArgumentError('Edad inválida');
     }
 
     // Llamada al repositorio
-    await repositorio.registrarMascota(responsable);
-  }
-
-  bool _validarCorreo(String correo) {
-    final regex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}");
-    return regex.hasMatch(correo);
+    await repositorio.registrarMascota(mascota);
   }
 }
 

@@ -12,6 +12,7 @@ class RegistrarAdoptanteScreen extends StatefulWidget {
       _RegistrarAdoptanteScreenState();
 }
 
+// Todo esto forma parte de la logica de formularios para registrar adoptantes
 class _RegistrarAdoptanteScreenState extends State<RegistrarAdoptanteScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nombreController = TextEditingController();
@@ -38,12 +39,19 @@ class _RegistrarAdoptanteScreenState extends State<RegistrarAdoptanteScreen> {
       );
 
       final adoptar = getIt<AdoptarMascota>();
-      adoptar.ejecutar(adoptante).then((_) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Adoptante registrado')));
-        context.push('/lista_mascotas');
-      }).catchError((e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
-      });
+      adoptar
+          .ejecutar(adoptante)
+          .then((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Adoptante registrado')),
+            );
+            context.push('/lista_mascotas');
+          })
+          .catchError((e) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('Error: $e')));
+          });
     }
   }
 
@@ -57,6 +65,38 @@ class _RegistrarAdoptanteScreenState extends State<RegistrarAdoptanteScreen> {
           key: _formKey,
           child: Column(
             children: [
+              // Recomendación para iniciar sesión con Google
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.04),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Regístrate para adoptar', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 6),
+                    Text('Te recomendamos iniciar sesión con tu cuenta de Google para acelerar el proceso y mantener tus datos seguros.'),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Inicio de sesión con Google no implementado')));
+                          },
+                          icon: const Icon(Icons.account_circle),
+                          label: const Text('Iniciar sesión con Google'),
+                          style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+                        ),
+                        const SizedBox(width: 12),
+                        TextButton(onPressed: () {}, child: const Text('Continuar sin Google')),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
               TextFormField(
                 controller: _nombreController,
                 decoration: const InputDecoration(labelText: 'Nombre'),

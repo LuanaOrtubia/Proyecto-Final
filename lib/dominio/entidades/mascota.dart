@@ -1,20 +1,28 @@
 class Mascota {
-  final String especie;
+  // true = perro, false = gato
+  final bool esPerro; // especie
   final String nombre;
-  final int edad;
-  final String raza;
-  final String sexo;
+  final String edad;
+  // true = macho, false = hembra
+  final bool esMacho; // sexo
+  final String tamanio;
+  final String observaciones;
+  final String? imageUrl;
 
   Mascota({
-    required this.especie,
+    required this.esPerro, // especie
     required this.nombre,
-    required this.edad,
-    required this.raza,
-    required this.sexo,
+  required this.edad,
+    required this.esMacho, // sexo
+    required this.tamanio,
+    required this.observaciones,
+    this.imageUrl,
   });
 
   @override
   String toString() {
-    return 'Mascota(especie: $especie, nombre: $nombre, edad: $edad, raza: $raza, sexo: $sexo)';
+    final especieStr = esPerro ? 'Perro' : 'Gato';
+    final sexoStr = esMacho ? 'Macho' : 'Hembra';
+    return 'Mascota(especie: $especieStr, nombre: $nombre, edad: $edad, sexo: $sexoStr, tamaño: $tamanio, observaciones: $observaciones, imageUrl: $imageUrl)';
   }
 }

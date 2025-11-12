@@ -4,6 +4,8 @@ import 'registro_responsable/registrar_responsable_screen.dart';
 import 'registro_adoptante/registrar_adoptante_screen.dart';
 import 'registro_mascota/registrar_mascota_screen.dart';
 import 'lista_mascotas/lista_mascotas_screen.dart';
+import 'detalle_mascota/detalle_mascota_screen.dart';
+import 'refugio/refugio_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -32,6 +34,19 @@ final router = GoRouter(
       path: '/lista_mascotas',
       name: 'lista_mascotas',
       builder: (context, state) => const ListaMascotasScreen(),
+    ),
+    GoRoute(
+      path: '/detalle_mascota',
+      name: 'detalle_mascota',
+      builder: (context, state) {
+        final mascota = state.extra as dynamic;
+        return DetalleMascotaScreen(mascota: mascota);
+      },
+    ),
+    GoRoute(
+      path: '/refugio',
+      name: 'refugio',
+      builder: (context, state) => const RefugioScreen(),
     ),
   ],
 );

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:proyecto_final/adaptadores/injection.dart';
-import 'package:proyecto_final/aplicacion/registros.dart';
-import 'package:proyecto_final/dominio/entidades/responsable_de_mascota.dart';
 
 class RegistrarResponsableScreen extends StatefulWidget {
   const RegistrarResponsableScreen({super.key});
@@ -31,20 +28,12 @@ class _RegistrarResponsableScreenState
 
   void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
-      final responsable = ResponsableDeMascota(
-        dni: int.parse(_dniController.text),
-        nombre: _nombreController.text,
-        apellido: _apellidoController.text,
-        correo: _correoController.text,
-      );
-
-      final registrar = getIt<RegistrarMascota>();
-      registrar.ejecutar(responsable).then((_) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Responsable registrado')));
-        context.push('/registrar_mascota', extra: {'esResponsable': true});
-      }).catchError((e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
-      });
+      // Por ahora sólo navegamos al formulario de mascota. El guardado de la
+      // mascota se realiza desde esa pantalla.
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Responsable registrado')));
+      context.push('/registrar_mascota', extra: {'esResponsable': true});
     }
   }
 
@@ -58,6 +47,38 @@ class _RegistrarResponsableScreenState
           key: _formKey,
           child: Column(
             children: [
+              // Recomendación para iniciar sesión con Google
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.04),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Regístrate como responsable', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 6),
+                    Text('Te recomendamos iniciar sesión con tu cuenta de Google para facilitar el proceso y proteger tus datos.'),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Inicio de sesión con Google no implementado')));
+                          },
+                          icon: const Icon(Icons.account_circle),
+                          label: const Text('Iniciar sesión con Google'),
+                          style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+                        ),
+                        const SizedBox(width: 12),
+                        TextButton(onPressed: () {}, child: const Text('Continuar sin Google')),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
               TextFormField(
                 controller: _nombreController,
                 decoration: const InputDecoration(labelText: 'Nombre'),

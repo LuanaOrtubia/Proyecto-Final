@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Permiso para acceder a la red (necesario para Image.network y llamadas HTTP) -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="proyecto_final"
         android:name="${applicationName}"
